@@ -54,6 +54,7 @@ router.get('/', async (req, res) => {
   try {
     // 若是传了id值，返回该条数据，否则返回全部分页数据
     if (_id) {
+      if (!/^[0-9a-z]{24}$/.test(_id)) return res.send({ err: 1, msg: 'id格式错误'})
       const note = await NoteModel.findOne({ _id })
       if (note) {
         return res.send({ err: 0, data: note.rawContentState })
@@ -71,7 +72,7 @@ router.get('/', async (req, res) => {
     res.send({ err: 0, data: { count, notes } })
   } catch (err) {
     console.log(err)
-    res.status(500)
+    res.status(404).send('404')
   }
 })
 

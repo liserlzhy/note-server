@@ -1,0 +1,69 @@
+<div class="d-flex align-items-center">
+  <button class="btn btn-danger" id="delete">删除</button>
+</div>
+<table class="table">
+  <tr>
+    <th class="custom-checkbox">
+      <input type="checkbox" name="checkbox1" class="custom-control-input custom-control-label" id="allChecked">
+      <label class="custom-control-label" for="allChecked">全选</label>
+    </th>
+    <th>邮箱地址</th>
+    <th>发送验证码时间</th>
+  </tr>
+  {{each users}}
+  <tr>
+    <td class="custom-checkbox">
+      <input type="checkbox" name="cbox" class="custom-control-input custom-control-label" id={{@$value._id}}>
+      <label class="custom-control-label" for={{@$value._id}}>{{@$value._id}}</label>
+    </td>
+    <td>{{$value.mail}}</td>
+    <td>{{$value.codeTime}}</td>
+  </tr>
+  {{/each}}
+</table>
+<script>
+  const allCheckedEl = $('#allChecked')
+  const cboxEls = $(":checkbox[name='cbox']")
+  allCheckedEl.on('change', function() {
+    cboxEls.prop('checked', this.checked)
+  })
+
+  cboxEls.each(function() {
+    $(this).on('change', function() {
+      let len = $(":checkbox[name='cbox']:checked").length
+      if (len >= cboxEls.length) {
+        allCheckedEl.prop('checked', true)
+      } else {
+        allCheckedEl.prop('checked', false)
+      }
+    })
+  })
+
+  $('#delete').on('click', function(e) {
+    e.preventDefault()
+    let checkedIds = []
+    $(":checkbox[name='cbox']:checked").each(function() {
+      checkedIds.push(this.id)
+    })
+
+    if (checkedIds.length > 0) {
+      $.ajax({ 
+        type: 'POST',
+        url: '/admin/garbage/delete',
+        contentType: 'application/json;charset=utf8',
+        processData: false,
+        data: JSON.stringify(checkedIds), 
+        dataType: 'json',
+        success(res) {
+          if (res.err === 0) {
+            $(":checkbox[name='cbox']:checked").closest('tr').remove()
+            allCheckedEl.prop('checked', false)
+          }
+        },
+        error(err) {
+          console.log(err)
+        }
+      })
+    }
+  })
+</script>

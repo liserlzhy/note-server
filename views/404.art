@@ -1,0 +1,4 @@
+{{extend './layout.art'}}
+{{block 'content'}}
+  <h1 class="text-center">404</h1>
+{{/block}}

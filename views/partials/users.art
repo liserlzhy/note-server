@@ -1,0 +1,45 @@
+<table class="table">
+  <tr>
+    <th>id</th>
+    <th>邮箱地址</th>
+    <th>创建日期</th>
+    <th>最近一次登录时间</th>
+    <th>文章数量</th>
+  </tr>
+  {{each users}}
+  <tr>
+    <td>{{@$value._id}}</td>
+    <td>{{$value.mail}}</td>
+    <td>{{$value.createTime}}</td>
+    <td>{{$value.updateTime}}</td>
+    <td>{{$value.num}}</td>
+  </tr>
+  {{/each}}
+</table>
+<nav aria-label="Page navigation example" class="d-flex justify-content-end">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="?page=1" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <% 
+      let start = curPage - (showPageCount - 1) / 2
+      let end = curPage + (showPageCount -1) / 2
+      if (start <= 0) {
+        start = 1
+      }
+      
+      if (end > pageCount) {
+        end = pageCount
+      }
+      for (let page = start; page <= end; page++) { %>
+      <li class="page-item {{page==curPage ? 'active' : ''}}"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+    <% } %>
+    <li class="page-item">
+      <a class="page-link" href="?page={{pageCount}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span> 
+      </a>
+    </li>
+  </ul>
+</nav>

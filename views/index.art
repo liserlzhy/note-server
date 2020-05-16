@@ -1,0 +1,16 @@
+{{extend './layout.art'}}
+{{block 'content'}}
+  <div class="d-flex">
+    <ul class="nav nav-pills flex-column">
+      <li class="nav-item">
+        <a class="nav-link {{curUrl==='/users'? 'active' : ''}}" href="/admin/users">用户数据管理</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link {{curUrl==='/garbage'? 'active' : ''}}" href="/admin/garbage">垃圾数据管理</a>
+      </li>
+    </ul>
+    <div class="flex-fill p-2">
+      {{include './partials'+curUrl}}
+    </div>
+  </div>
+{{/block}}
