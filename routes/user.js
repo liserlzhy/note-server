@@ -37,16 +37,21 @@ router.post('/register', async (req, res) => {
   if (!ismail(mail)) return res.send({ err: 1, msg: '邮箱地址格式不正确'})
   if (password.length < 6) return res.send({ err: 1, msg: '密码长度不可少于6位'})
 
-  const user = await UserModel.findOne({ mail })
-  if (!user) return res.send({ err: 1, msg: '验证码不正确' })
-  if (user.isLive) return res.send({ err: 1, msg: '该邮箱地址已经被注册了'})
-  
-  const nowTime = Date.now()
-  if (user.code === code && nowTime - user.codeTime < 600000) {
-    await UserModel.updateOne({ mail }, { password: md5(password), createTime: nowTime, isLive: true })
-    res.send({ err: 0, msg: '注册成功' })
-  } else {
-    res.send({ err: 1, msg: '验证码不正确' })
+  try {
+    const user = await UserModel.findOne({ mail })
+    if (!user) return res.send({ err: 1, msg: '验证码不正确' })
+    if (user.isLive) return res.send({ err: 1, msg: '该邮箱地址已经被注册了'})
+    
+    const nowTime = Date.now()
+    if (user.code === code && nowTime - user.codeTime < 600000) {
+      await UserModel.updateOne({ mail }, { password: md5(password), createTime: nowTime, isLive: true })
+      res.send({ err: 0, msg: '注册成功' })
+    } else {
+      res.send({ err: 1, msg: '验证码不正确' })
+    }
+  } catch (err) {
+    res.status(404).send('注册失败')
+    console.log(err)
   }
 
 })

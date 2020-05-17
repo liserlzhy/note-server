@@ -11,7 +11,7 @@ const path = require('path')
 require('dotenv').config()
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000
 
 // 数据库连接
 mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })

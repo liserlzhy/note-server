@@ -2,8 +2,8 @@ const nodemailer = require('nodemailer')
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.qq.com',
-  port: 25,
-  secure: false,
+  port: 465,
+  secure: true,
   auth: {
     user: '2284565003@qq.com',
     pass: 'vhvxhdevozvxecgg'

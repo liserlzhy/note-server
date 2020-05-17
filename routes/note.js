@@ -21,11 +21,13 @@ router.post('/add', async (req, res) => {
 
 router.post('/update', async (req, res) => {
   const { _id, rawContentState } = req.body
+
   try {
     if (!_id || !rawContentState) return res.status(404).send('参数缺失')
   
     const note = await NoteModel.updateOne({ _id }, { rawContentState, updateTime: Date.now() })
     if (note.ok) {
+      console.log(rawContentState)
       res.send({ err: 0, msg: '更新成功'})
     } else {
       res.status(404).send('更新失败')
