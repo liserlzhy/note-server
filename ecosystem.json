@@ -12,11 +12,9 @@
       "followSymlinks": false
     },
     "env" :{
-      "PORT": 3000,
       "NODE_ENV": "development"
     },
     "env_production": {
-      "PORT": 80,
       "NODE_ENV": "production"
     },
     "error_file": "./logs/app-err.log",
@@ -27,7 +25,7 @@
   "deploy": {
     "production": {
       "user": "root",
-      "host": ["120.78.177.139"],
+      "host": "120.78.177.139",
       "ref": "origin/master",
       "repo": "git@github.com:liserlzhy/note-server.git",
       "path": "/home/liserl/www",
