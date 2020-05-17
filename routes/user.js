@@ -24,7 +24,7 @@ router.get('/getcode', async (req, res) => {
     }
     res.send({ err: 0, msg: '验证码发送成功' })
   } catch (err) {
-    console.log(err.response)
+    console.log(err)
     return res.send({ err: 1, msg: '获取验证码失败, 请稍候再试'})
   }
 })

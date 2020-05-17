@@ -6,14 +6,16 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const expressJwt = require('express-jwt')
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 const path = require('path')
 require('dotenv').config()
 
 const app = express()
+const PORT = process.env.PORT || 3000
 
 // 数据库连接
 mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('db is running ...'))
+  .then(() => console.log('数据库连接成功'))
   .catch(err => console.log('数据库连接失败: ', err))
 
 // 静态目录
@@ -30,6 +32,7 @@ app.set('view options', {
 app.use(session({
   secret: 'dsfLlsldlxcvewprppppcgs;;dfsc',
   cookie: { maxAge: 20 * 60 * 1000 }, 
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
   resave: true, 
   saveUninitialized: true 
 }))
@@ -58,4 +61,4 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
-app.listen(process.env.PORT || 3000)
+app.listen(PORT, console.log(`http://localhost:${PORT}`))
